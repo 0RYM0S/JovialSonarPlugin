@@ -8,5 +8,6 @@ public class JovialPlugin implements Plugin {
         context.addExtension(JovialLanguage.class);
         // JovialSensor performs analysis by talking to jovialserver (pygls based)
         context.addExtension(JovialSensor.class);
+        context.addExtension(JovialRulesDefinition.class);
     }
 }

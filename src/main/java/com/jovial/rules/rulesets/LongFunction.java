@@ -2,29 +2,33 @@ package com.jovial.rules.rulesets;
 
 import com.jovial.AST.ASTModel;
 import com.jovial.AST.FunctionNode;
-import com.jovial.AST.StatementNode;
 import com.jovial.rules.base.IssueReporter;
 import com.jovial.rules.base.Rule;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 
 /**
- * Example rule that flags every occurrence of the word "goto".
+ * Reports functions that exceed a hard coded length.
  */
-public class NoGoto implements Rule {
+public class LongFunction implements Rule {
+
+    private static final int MAX_LINES = 30;
 
     @Override
     public String key() {
-        return "JOV001";
+        return "JOV002";
     }
 
     @Override
     public void apply(ASTModel ast, InputFile file, SensorContext context) {
         for (FunctionNode fn : ast.getFunctions()) {
-            for (StatementNode st : fn.getStatements()) {
-                if (st.getText().toLowerCase().contains("goto")) {
-                    IssueReporter.report(context, file, key(), st.getLine(), "Avoid GOTO statements");
-                }
+            if (fn.getStatements().size() > MAX_LINES) {
+                IssueReporter.report(
+                        context,
+                        file,
+                        key(),
+                        fn.getStatements().get(MAX_LINES).getLine(),
+                        "Function '" + fn.getName() + "' is too long");
             }
         }
     }

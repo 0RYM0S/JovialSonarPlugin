@@ -5,5 +5,12 @@
     "status": "READY",
     "remediation": "10min",
     "description": "GOTO statements should be avoided."
+  },
+  "JOV002": {
+    "title": "Long Function",
+    "type": "CODE_SMELL",
+    "status": "READY",
+    "remediation": "10min",
+    "description": "Functions should not exceed thirty lines."
   }
 }

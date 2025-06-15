@@ -9,24 +9,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 /**
- * Very simple rule that flags usage of "goto" statements.
+ * Reports an issue whenever a call to `print` is encountered.
  */
-public class NoGoto implements Rule {
+public class NoPrintDebug implements Rule {
 
-    public static final String KEY = "JOV001";
+    public static final String KEY = "JOV002";
 
     @Override
     public void apply(InputFile inputFile, SensorContext context) {
         try {
             int lineNumber = 1;
             for (String line : Files.readAllLines(inputFile.path())) {
-                if (line.toLowerCase().contains("goto")) {
-                    IssueReporter.reportIssue(context, inputFile, lineNumber, "Avoid GOTO statements", KEY);
+                if (line.contains("print(")) {
+                    IssueReporter.reportIssue(context, inputFile, lineNumber,
+                            "Debug print statements should be removed", KEY);
                 }
                 lineNumber++;
             }
         } catch (IOException e) {
-            // ignore in POC
+            // ignore in this proof of concept
         }
     }
 }

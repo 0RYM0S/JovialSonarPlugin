@@ -4,6 +4,10 @@ import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
+
+import com.jovial.rules.base.Rule;
+import com.jovial.rules.base.RuleRegistry;
 
 
 public class JovialSensor implements Sensor {
@@ -21,14 +25,10 @@ public class JovialSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        fs.inputFiles(fs.predicates().all()).forEach(file -> {
-            if (!file.filename().endsWith(".jov")) return;
-
-//            ASTModel ast = LSPRunner.parseAST(file);
-//            if (ast != null) {
-//                NoGotoRule.apply(ast, file, context);
-//                // Add more rule calls here...
-//            }
+        fs.inputFiles(fs.predicates().hasLanguage(JovialLanguage.KEY)).forEach(file -> {
+            for (Rule rule : RuleRegistry.getAllRules()) {
+                rule.apply(file, context);
+            }
         });
     }
 }

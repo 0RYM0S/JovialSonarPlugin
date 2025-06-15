@@ -1,4 +1,4 @@
-package com.jovial.sonar.plugin;
+package com.jovial.plugin;
 
 import org.sonar.api.Plugin;
 

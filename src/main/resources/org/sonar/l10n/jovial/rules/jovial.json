@@ -1,0 +1,9 @@
+{
+  "JOV001": {
+    "title": "Avoid GOTO",
+    "type": "CODE_SMELL",
+    "status": "READY",
+    "remediation": "10min",
+    "description": "GOTO statements should be avoided."
+  }
+}

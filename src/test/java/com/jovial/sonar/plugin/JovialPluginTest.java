@@ -1,5 +1,6 @@
 package com.jovial.sonar.plugin;
 
+import com.jovial.plugin.JovialPlugin;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

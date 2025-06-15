@@ -1,9 +1,9 @@
-package com.jovial.sonar.plugin;
+package com.jovial.plugin;
 
 import org.sonar.api.resources.Language;
 
 public class JovialLanguage implements Language {
-    public static final String KEY = "jov";
+    public static final String KEY = "jovial";
     public static final String NAME = "Jovial";
 
     @Override

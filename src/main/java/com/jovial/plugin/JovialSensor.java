@@ -1,9 +1,14 @@
 package com.jovial.plugin;
 
+import com.jovial.AST.ASTModel;
+import com.jovial.plugin.lsp.LSPRunner;
+import com.jovial.rules.base.Rule;
+import com.jovial.rules.base.RuleRegistry;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.batch.fs.FileSystem;
 
 
 public class JovialSensor implements Sensor {
@@ -22,13 +27,16 @@ public class JovialSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
         fs.inputFiles(fs.predicates().all()).forEach(file -> {
-            if (!file.filename().endsWith(".jov")) return;
+            if (!file.filename().endsWith(".j73")) {
+                return;
+            }
 
-//            ASTModel ast = LSPRunner.parseAST(file);
-//            if (ast != null) {
-//                NoGotoRule.apply(ast, file, context);
-//                // Add more rule calls here...
-//            }
+            ASTModel ast = LSPRunner.parseAST(file);
+            if (ast != null) {
+                for (Rule rule : RuleRegistry.all()) {
+                    rule.apply(ast, file, context);
+                }
+            }
         });
     }
 }

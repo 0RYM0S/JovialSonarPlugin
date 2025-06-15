@@ -3,6 +3,9 @@ package com.jovial.plugin;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
+import com.jovial.AST.ASTModel;
+import com.jovial.plugin.lsp.LSPRunner;
+import com.jovial.rules.base.RuleRegistry;
 import org.sonar.api.batch.fs.FileSystem;
 
 
@@ -21,14 +24,11 @@ public class JovialSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        fs.inputFiles(fs.predicates().all()).forEach(file -> {
-            if (!file.filename().endsWith(".jov")) return;
-
-//            ASTModel ast = LSPRunner.parseAST(file);
-//            if (ast != null) {
-//                NoGotoRule.apply(ast, file, context);
-//                // Add more rule calls here...
-//            }
+        fs.inputFiles(fs.predicates().hasLanguage(JovialLanguage.KEY)).forEach(file -> {
+            ASTModel ast = LSPRunner.parse(file);
+            if (ast != null) {
+                RuleRegistry.getRules().forEach(rule -> rule.apply(ast, file, context));
+            }
         });
     }
 }

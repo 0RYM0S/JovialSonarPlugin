@@ -8,19 +8,21 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 
 /**
- * Example rule that flags any use of 'goto'.
+ * Flags lines that exceed 120 characters.
  */
-public class NoGoto implements Rule {
+public class MaxLineLength implements Rule {
+    private static final int MAX_LENGTH = 120;
+
     @Override
     public String key() {
-        return "JOV001";
+        return "JOV002";
     }
 
     @Override
     public void apply(ASTModel ast, InputFile file, SensorContext context) {
         for (StatementNode stmt : ast.getStatements()) {
-            if (stmt.getText().trim().startsWith("goto")) {
-                IssueReporter.reportIssue(context, file, stmt.getLine(), key(), "Avoid using goto statements");
+            if (stmt.getText().length() > MAX_LENGTH) {
+                IssueReporter.reportIssue(context, file, stmt.getLine(), key(), "Line exceeds " + MAX_LENGTH + " characters");
             }
         }
     }

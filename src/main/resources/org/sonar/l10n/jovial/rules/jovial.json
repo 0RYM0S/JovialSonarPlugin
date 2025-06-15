@@ -5,5 +5,12 @@
     "status": "READY",
     "remediation": "10min",
     "description": "GOTO statements should be avoided."
+  },
+  "JOV002": {
+    "title": "Line too long",
+    "type": "CODE_SMELL",
+    "status": "READY",
+    "remediation": "5min",
+    "description": "Lines should not exceed 120 characters."
   }
 }
